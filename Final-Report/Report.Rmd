@@ -5,6 +5,7 @@ date: "`r Sys.Date()`"
 output: 
     pdf_document:
         latex_engine: xelatex
+        toc : true
 ---
 
 ```{r setup, include=FALSE}
@@ -19,7 +20,7 @@ Whether you need to calculate mathematical constants, solve complex equations, o
 
 To ensure the reliability and accuracy of this library, I have tested it by calculating mathematical constants, such as pi, e, and the golden ratio, to an impressive number of decimal places. The results have demonstrated a high level of accuracy, verifying the effectiveness in handling complex computations with precision.
 
-In this documentation, you will find explanations of the library's functionalities, examples, and pseudocode for various algorithms implemented within the library.
+In this documentation, you will find explanations of the library's functionality, examples, and pseudocode for various algorithms implemented within the library.
 
 # Methodology
 
@@ -41,7 +42,7 @@ To handle negative numbers, we draw inspiration from the widely used two's compl
 | -1     | [ (9) (9) (0) (0) ] |
 | -1.2   | [ (9) (8) (8) (0) ] |
 
-: Examples of number representation in commputer memory
+: Examples of number representation in computer memory
 
 To determine the representation of -1.2, we first express 1.2 as [(0)(1)(2)(0)]. Next, we take the nine's complement of each digit, resulting in [(9)(8)(7)(9)]. Finally, we add [(0)(0)(0)(1)] to obtain the representation of -1.2 as [(9)(8)(8)(0)].
 
@@ -59,9 +60,9 @@ $N$ : nDigitsBeforeDecimal: The number of DIGITs before the decimal point.
 
 $M$ : nDigitsAfterDecimal: The number of DIGITs after the decimal point.
 
-Consider the example of storing the number 112233445500110044.55. Assuming a $K$ of 4, $N$ of 6, and $M$ of 2, the $B$ would be 10,000.
+Consider the example of storing the number 112233445500110044.55. Let $K$ be 4, $N$ be 6, and $M$ be 2, then $B$ would be 10,000.
 
-In this case, the length of the vector is determined by $N + M$, denoted as $L$ : nDIGITS and we can represent numbers from -5000 0000 0000 0000 0000 0000.0000 0000 to 4999 9999 9999 9999 9999 9999.9999 9999 with increments of 0.0000 0001. By structuring our fixed-point number class in this manner, we ensure efficient and precise storage of numbers within the specified precision constraints.
+The length of the vector is determined by $N + M$, denoted as $L$ : nDIGITS. We can represent numbers from -5000 0000 0000 0000 0000 0000.0000 0000 to 4999 9999 9999 9999 9999 9999.9999 9999 with increments of 0.0000 0001. By structuring our fixed-point number class in this manner, we ensure efficient and precise storage of numbers within the specified precision constraints.
 
 ![Schematic representation of the array used to store the number in memory.](Numbersystem.png)
 
@@ -255,7 +256,7 @@ Let $a>0$ be the given number. Our goal is to find $x$ such that $\frac1x-a = 0$
 
 Let $f(x) = \frac1x-a$ $\implies f'(x) = -\frac1{x^2}$.
 
-Using the Newton's method, if we start from a guess $x_0$ and iteratively generate $x_1,\ x_2\ \dots\ x_n$ which are better and better approximations for the root of $f(x)$. For $k\ge0$, $$x_{k+1} = x_{k} - \frac{f(x_k)}{f'(x_k)}=2x_k-ax_k^2$$Newton's method has been shown to converge quadraticaly which means the number of correct decimal places in the guess roughly doubes every iteration which means we will have to do at most $\log(L\cdot K)$ iterations.
+Using the Newton's method, if we start from a guess $x_0$ and iteratively generate $x_1,\ x_2\ \dots\ x_n$ which are better and better approximations for the root of $f(x)$. For $k\ge0$, $$x_{k+1} = x_{k} - \frac{f(x_k)}{f'(x_k)}=2x_k-ax_k^2$$Newton's method has been shown to converge quadratically which means the number of correct decimal places in the guess roughly doubes every iteration which means we will have to do at most $\log(L\cdot K)$ iterations.
 
 For detailed information on the algorithms and implementations of the multiplication, reciprocal, and division operations, refer to the pseudocode provided in the appendix of this documentation.
 
@@ -287,13 +288,15 @@ Set $x_0$ to be a guess for the root of $f(x)$. Then $\forall\  k\ge 0,$ $x_{k+1
 
 Since the Newtons method has been shown to converge quadratically the number of correct decimal digits in $x_k$ roughly doubles every iteration hence the number of iteration of the newtons algorithm we need is $\log_2(L\cdot K)$
 
-`int_reciprocal` function is implemented by the long division algorithm which is quite staightforward.
+`int_reciprocal` function is implemented by the long division algorithm which is quite straightforward.
 
-`arctan` function and `arctanOfReciprocal` function are implemented using the taylor series expantion of the $\tan^{-1}(x)$. $$\tan^{-1}(x)=x-\frac{x^3}{3!}+\frac{x^5}{5!}-\frac{x^7}{7!}\cdots$$
+`arctan` function and `arctanOfReciprocal` function are implemented using the Taylor series expansion of the $\tan^{-1}(x)$. $$\tan^{-1}(x)=x-\frac{x^3}{3!}+\frac{x^5}{5!}-\frac{x^7}{7!}\cdots$$
 
 The terms $\frac{x^k}{k!}$ are added until $\frac{x^k}{k!}$ goes out of precision and becomes 0.
 
 For detailed information on the algorithms and implementations of these functions refer to the pseudocode provided in the appendix of this documentation.
+
+\newpage
 
 # Testing
 
@@ -303,21 +306,15 @@ The testing process can be divided into the following steps:
 
 1.  Select the mathematical constant to be calculated.
 
-    +-------------------------------+--------------------------------------------------------------------------------------------+-----------------+
-    | Name                          | Formula                                                                                    | Target decimals |
-    +===============================+============================================================================================+=================+
-    | Pythagoras's constant $(\pi)$ | $$                                                                                         | $1,00,000$      |
-    |                               |                                  \frac{\pi}{4} = \tan^{-1}(\frac15)+\tan^{-1}(\frac1{239}) |                 |
-    |                               |                                  $$                                                        |                 |
-    +-------------------------------+--------------------------------------------------------------------------------------------+-----------------+
-    | Euler's number $(e)$          | $$                                                                                         | $1,00,000$      |
-    |                               |                                  e= 1+ \frac{1}{1!}+\frac{1}{2!}+\frac{1}{3!}+\cdots       |                 |
-    |                               |                                  $$                                                        |                 |
-    +-------------------------------+--------------------------------------------------------------------------------------------+-----------------+
-    | Golden Ratio $(\phi)$         | $$                                                                                         | $1,00,000$      |
-    |                               |                                  \frac{\sqrt{5}+1}{2}                                      |                 |
-    |                               |                                  $$                                                        |                 |
-    +-------------------------------+--------------------------------------------------------------------------------------------+-----------------+
+    +-------------------------------+---------------------------------------------------------------+
+    | Name                          | Formula                                                       |
+    +===============================+===============================================================+
+    | Pythagoras's constant $(\pi)$ | $$\frac{\pi}{4} = \tan^{-1}(\frac15)+\tan^{-1}(\frac1{239})$$ |
+    +-------------------------------+---------------------------------------------------------------+
+    | Euler's number $(e)$          | $$e= 1+ \frac{1}{1!}+\frac{1}{2!}+\frac{1}{3!}+\cdots$$       |
+    +-------------------------------+---------------------------------------------------------------+
+    | Golden Ratio $(\phi)$         | $$\frac{\sqrt{5}+1}{2}$$                                      |
+    +-------------------------------+---------------------------------------------------------------+
 
     : Mathematical constants used for testing
 
@@ -343,19 +340,19 @@ This testing approach helps ensure that the library performs accurately and cons
 
 The C++ code used for testing is provided in the appendix to this document. Time taken for execution will vary across different systems but the results are still reproducible.
 
-+-------------+----------------+-------------------+---------------------+-------------+
-| Constant    | Target decimal | Accurate Decimals | Time taken(seconds) | Accuracy    |
-+=============+================+===================+=====================+=============+
-| $\pi$       | 1,00,000       | 99,997            | 52.704              | 99.997%     |
-+-------------+----------------+-------------------+---------------------+-------------+
-| $e$         | 1,00,000       | 99,997            | 9.763               | 99.997%     |
-+-------------+----------------+-------------------+---------------------+-------------+
-| $\phi$      | 1,00,000       | 99,999            | 558.673             | 99.999%     |
-+-------------+----------------+-------------------+---------------------+-------------+
++------------+----------------+-------------------+---------------------+------------+
+| Constant   | Target decimal | Accurate Decimals | Time taken(seconds) | Accuracy   |
++============+================+===================+=====================+============+
+| $\pi$      | 1,00,000       | 99,997            | 52.704              | 99.997%    |
++------------+----------------+-------------------+---------------------+------------+
+| $e$        | 1,00,000       | 99,997            | 9.763               | 99.997%    |
++------------+----------------+-------------------+---------------------+------------+
+| $\phi$     | 1,00,000       | 99,999            | 558.673             | 99.999%    |
++------------+----------------+-------------------+---------------------+------------+
 
 : Results of testing
 
-Resources used for varification are [University](http://www.geom.uiuc.edu/~huberty/math5337/groupe/digits.html)[of Illinois](ss) for $\pi$, [nasa.gov](https://apod.nasa.gov/htmltest/gifcity/e.1mil) for $e$, and [goldenratio](https://www.goldenratio.org/)[.org](ss) for $\phi$.
+Resources used for verification are [University](http://www.geom.uiuc.edu/~huberty/math5337/groupe/digits.html)[of Illinois](ss) for $\pi$, [nasa.gov](https://apod.nasa.gov/htmltest/gifcity/e.1mil) for $e$, and [goldenratio](https://www.goldenratio.org/)[.org](ss) for $\phi$.
 
 # Conclusion
 
@@ -562,19 +559,6 @@ function arctanOfReciprocal(x: ll) -> num
 end function
 ```
 
-## Operator\<(num&)
-
-``` cpp
-function operator<(b: num) -> result: bool
-    if this->sign() is equal to b.sign() then
-        for i from 0 to nDIGITS - 1 do
-            if digits[i] is not equal to b.digits[i] then
-                return digits[i] < b.digits[i]
-        return false
-    
-    return b.sign()
-```
-
 ## Multiplication
 
 ### operator\*(num&)
@@ -755,7 +739,23 @@ function reciprocal() -> result: num
     return guess
 ```
 
-## num(string)
+## Miscellaneous
+
+### Operator\<(num&)
+
+``` cpp
+function operator<(b: num) -> result: bool
+    if this->sign() is equal to b.sign() then
+        for i from 0 to nDIGITS - 1 do
+            if digits[i] is not equal to b.digits[i] then
+                return digits[i] < b.digits[i]
+        return false
+    
+    return b.sign()
+```
+
+
+### num(string)
 
 ``` cpp
 function num::num(string number)
@@ -809,7 +809,7 @@ function num::num(string number)
         this->negate()
 ```
 
-## NumToString(num&)
+### NumToString(num&)
 
 ``` cpp
 function NumToString(x: num) -> result: string
