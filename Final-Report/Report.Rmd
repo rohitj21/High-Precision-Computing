@@ -12,6 +12,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+\newpage
 # Introduction
 
 In the realm of mathematics and computation, precision plays a crucial role in achieving accurate and reliable results. Traditional data types in programming languages often have limitations when it comes to handling extremely large numbers or performing calculations with high precision. To address this challenge, our project aims to provide a robust and efficient library for performing arithmetic operations with arbitrary precision. This library offers a custom `num` class that allows users to work with numbers of virtually any size (provided that they have enough memory) and perform mathematical operations with exceptional precision.
