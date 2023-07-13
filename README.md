@@ -36,5 +36,6 @@ To use this library, follow these steps:
 This project is still a work in progress, and contributions are welcome. If you have any suggestions, improvements, or additional functions to add to the library, feel free to submit a pull request or open an issue.
 
 ## Contact
+Name: Rohit Jangid
 
 E-mail: rohitj21.py@gmail.com
